@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Préstamo - Archivo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+    <style>
+        :root {
+            --vintage-bg: #f4ecdf;
+            --vintage-card: #fffaf0;
+            --vintage-dark: #3b2f2f;
+            --vintage-accent: #8b5a2b;
+            --vintage-gold: #c5a059;
+            --vintage-border: #d4c3b3;
+        }
+        body {
+            background-color: var(--vintage-bg);
+            color: var(--vintage-dark);
+            font-family: 'Lora', serif;
+        }
+        h4, .card-header {
+            font-family: 'Cinzel', serif;
+        }
+        .vintage-card {
+            background-color: var(--vintage-card);
+            border: 1px solid var(--vintage-border);
+            box-shadow: 4px 6px 15px rgba(43, 29, 17, 0.1);
+        }
+        .card-header-vintage {
+            background-color: #2b1d11 !important;
+            color: #fdf6e2;
+            border-bottom: 2px solid var(--vintage-gold);
+        }
+        input[type="date"] { 
+            width: 100%; 
+            padding: 8px; 
+            margin-bottom: 15px; 
+            border: 1px solid var(--vintage-border); 
+            border-radius: 4px; 
+            background: #fff;
+        }
+        p { margin-bottom: 1.5rem; }
+        .btn-vintage {
+            background-color: var(--vintage-accent);
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            border: none;
+        }
+        .btn-vintage:hover {
+            background-color: #6e4520;
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="d-flex align-items-center justify-content-center" style="min-height: 100vh; padding: 30px 0;">
+
+<div class="container col-md-6">
+    <div class="card vintage-card">
+        <div class="card-header card-header-vintage py-3">
+            <h4 class="mb-0 text-center"><i class="bi bi-bookmark-plus text-warning"></i> Registrar Préstamo Institucional</h4>
+        </div>
+        <div class="card-body p-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning border-dark">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                
+                <hr class="border-secondary my-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Cancelar</a>
+                    <button type="submit" class="btn btn-vintage px-4">Formalizar Préstamo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#id_usuario').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: "🔍 Buscar usuario por nombre o código..."
+        });
+        
+        $('#id_ejemplar').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: "🔍 Buscar ejemplar por título o código..."
+        });
+    });
+</script>
+</body>
+</html>

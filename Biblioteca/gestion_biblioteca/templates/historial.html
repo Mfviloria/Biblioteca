@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Préstamos - Archivo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vintage-bg: #f4ecdf;
+            --vintage-card: #fffaf0;
+            --vintage-dark: #3b2f2f;
+            --vintage-accent: #8b5a2b;
+            --vintage-gold: #c5a059;
+            --vintage-border: #d4c3b3;
+        }
+        body {
+            background-color: var(--vintage-bg);
+            color: var(--vintage-dark);
+            font-family: 'Lora', serif;
+        }
+        h3, h5 {
+            font-family: 'Cinzel', serif;
+        }
+        .vintage-table {
+            background-color: var(--vintage-card);
+            border-color: var(--vintage-border);
+        }
+        .table-dark {
+            background-color: #2b1d11 !important;
+            border-color: #3b2f2f !important;
+        }
+        input {
+            background-color: #fff !important;
+            border: 1px solid var(--vintage-border) !important;
+        }
+        .btn-vintage {
+            background-color: var(--vintage-accent);
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            border: none;
+        }
+        .btn-vintage:hover {
+            background-color: #6e4520;
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="p-5">
+<div class="container">
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-dark mb-4"><i class="bi bi-arrow-left"></i> Volver al Inicio</a>
+    <h3 class="mb-3 text-dark"><i class="bi bi-search"></i> Historial Académico de Préstamos</h3>
+    
+    <form method="GET" class="d-flex gap-2 my-4">
+        <input type="text" name="codigo" class="form-control w-25" placeholder="Código institucional del lector..." required>
+        <button type="submit" class="btn btn-vintage px-4">Consultar</button>
+    </form>
+    
+    {% if usuario %}
+        <div class="card p-3 mb-4 border-secondary bg-white shadow-sm">
+            <h5 class="mb-0">Lector: <strong>{{ usuario.nombres }}</strong> <span class="text-muted fs-6">({{ usuario.rol }} - {{ usuario.carrera }})</span></h5>
+        </div>
+        
+        <table class="table table-bordered vintage-table shadow-sm">
+            <thead class="table-dark text-warning">
+                <tr>
+                    <th>Volumen / Ejemplar</th>
+                    <th>Fecha Préstamo</th>
+                    <th>Vencimiento</th>
+                    <th>Estado</th>
+                    <th>Multa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in historial %}
+                <tr>
+                    <td>{{ p.ejemplar }}</td>
+                    <td>{{ p.fecha_prestamo }}</td>
+                    <td>{{ p.fecha_vencimiento }}</td>
+                    <td>
+                        {% if p.devuelto %}
+                            <span class="badge bg-success">Devuelto</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% endif %}
+                    </td>
+                    <td>${{ p.multa }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center text-muted">No se registran préstamos para este usuario.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
